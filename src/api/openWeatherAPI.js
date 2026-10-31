@@ -6,7 +6,7 @@ const API_KEY = process.env.EXPO_PUBLIC_OPENWEATHER_API_KEY;
 function buildLocationQuery(location) {
   if (location.coords) {
     const { latitude, longitude } = location.coords;
-    return `lat=${latitude}&lon${longitude}`;
+    return `lat=${latitude}&lon=${longitude}`;
   }
   return `q=${encodeURIComponent(location.city.trim())}`;
 }
@@ -19,6 +19,7 @@ async function request(endpoint, location) {
     location
   )}&units=metric&appid=${API_KEY}`;
   const response = await fetch(url);
+  console.log("🌐", response.status, url);
 
   if (response.status === 404) {
     throw new Error("City not found. check the spelling again.");

@@ -11,7 +11,7 @@ export function formatTemp(celsius, unit) {
 
 export function formatWind(metersPerSecond, unit) {
   if (unit === UNITS.FAHRENHEIT) {
-    return `${MATH.round(metersPerSecond * 2.237)} mph`;
+    return `${Math.round(metersPerSecond * 2.237)} mph`;
   }
   return `${Math.round(metersPerSecond * 3.6)} km/h`;
 }

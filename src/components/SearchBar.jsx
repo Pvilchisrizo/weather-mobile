@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Keyboard,
   Pressable,
   StyleSheet,
@@ -7,9 +8,9 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { colors, MIN_TOUCH, radius, spacing } from "../theme";
+import { colors, radius, spacing } from "../theme";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, onLocate, isLocating }) {
   const [query, setQuery] = useState("");
 
   const handleSubmit = () => {
@@ -23,12 +24,12 @@ export default function SearchBar({ onSearch }) {
   return (
     <View style={styles.row}>
       <TextInput
-        style={StyleSheet.input}
+        style={styles.input}
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={handleSubmit}
         placeholder="Search a city..."
-        placeholderTextColor={colors.textMuted}
+        placeholderTextColor="#6b7c8f"
         returnKeyType="search"
         autoCapitalized="words"
         autoCorrect={false}
@@ -42,6 +43,19 @@ export default function SearchBar({ onSearch }) {
       >
         <Text style={styles.icon}>🔍</Text>
       </Pressable>
+      <Pressable
+        onPress={onLocate}
+        disabled={isLocating}
+        style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+        accessibilityRole="button"
+        accessibilityLabel="Use my current location"
+      >
+        {isLocating ? (
+          <ActivityIndicator color="#1d3557" />
+        ) : (
+          <Text style={styles.icon}>📍</Text>
+        )}
+      </Pressable>
     </View>
   );
 }
@@ -50,30 +64,40 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     gap: spacing.sm,
+    marginBottom: spacing.sm,
   },
   input: {
     flex: 1,
     minWidth: 0,
-    minHeight: MIN_TOUCH,
+    minHeight: 52,
     paddingHorizontal: spacing.md,
     borderRadius: radius.pill,
-    backgroundColor: colors.glass,
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
     borderColor: colors.glassBorder,
-    color: colors.text,
-    fontSize: 16,
+    color: "#1d3557",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    fontSize: 17,
   },
   button: {
-    width: MIN_TOUCH,
-    height: MIN_TOUCH,
+    width: 52,
+    height: 52,
     borderRadius: radius.pill,
-    backgroundColor: colors.glassStrong,
+    backgroundColor: "#ffb703",
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
   },
   pressed: {
-    opacity: 0.6,
+    opacity: 0.7,
   },
   icon: {
-    fontSize: 20,
+    fontSize: 22,
   },
 });
